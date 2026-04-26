@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Containment Thesis — Virtual Intelligence and the Alignment Problem</title>
+<meta name="description" content="An interactive map of the containment thesis: why AI safety has been solving the wrong problem, and what an honest engineering discipline would look like instead.">
+<link rel="canonical" href="https://candc3d.github.io/containment-thesis/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Containment Thesis">
+<meta property="og:description" content="An interactive map of the containment thesis: why AI safety has been solving the wrong problem, and what an honest engineering discipline would look like instead.">
+<meta property="og:url" content="https://candc3d.github.io/containment-thesis/">
+<meta property="og:site_name" content="Virtual Intelligence Essay Series">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://candc3d.github.io/containment-thesis/og_preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Containment Thesis — Virtual Intelligence and the Alignment Problem">
+
+<!-- Twitter/X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Containment Thesis">
+<meta name="twitter:description" content="An interactive map of the containment thesis: why AI safety has been solving the wrong problem, and what an honest engineering discipline would look like instead.">
+<meta name="twitter:image" content="https://candc3d.github.io/containment-thesis/og_preview.png">
+<meta name="twitter:image:alt" content="The Containment Thesis — Virtual Intelligence and the Alignment Problem">
+
+<!-- Additional SEO -->
+<meta name="author" content="Christopher Horrocks">
+<meta name="keywords" content="containment thesis, virtual intelligence, AI safety, AI alignment, AI governance, AI policy, existential risk, instrumental convergence, doomer fallacy, BSL-4, hardware interlocks, monitoring agents, Bostrom, Omohundro, Frankfurt, Searle, Christopher Horrocks">
+<meta name="robots" content="index, follow">
+
+<!-- Favicons -->
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "The Containment Thesis",
+  "description": "An interactive map of the containment thesis: why AI safety has been solving the wrong problem, and what an honest engineering discipline would look like instead.",
+  "url": "https://candc3d.github.io/containment-thesis/",
+  "author": {
+    "@type": "Person",
+    "name": "Christopher Horrocks",
+    "jobTitle": "Technologist",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "University of Pennsylvania"
+    },
+    "url": "https://chorrocks.substack.com"
+  },
+  "isPartOf": {
+    "@type": "CreativeWorkSeries",
+    "name": "Virtual Intelligence Essay Series",
+    "url": "https://chorrocks.substack.com"
+  },
+  "about": [
+    { "@type": "Thing", "name": "AI Safety" },
+    { "@type": "Thing", "name": "AI Governance" },
+    { "@type": "Thing", "name": "Existential Risk", "sameAs": "https://en.wikipedia.org/wiki/Global_catastrophic_risk" }
+  ],
+  "keywords": "containment thesis, virtual intelligence, AI safety, AI alignment, AI governance, existential risk",
+  "inLanguage": "en-US",
+  "datePublished": "2026-04-27"
+}
+</script>
+
+<style>
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f6f2;
+  --bg-tertiary: #eaece6;
+  --text-primary: #141810;
+  --text-secondary: #3e4438;
+  --text-tertiary: #7a8272;
+  --text-muted: #a6ae9e;
+  --border-light: rgba(0,0,0,0.10);
+  --border-mid: rgba(0,0,0,0.18);
+  --border-strong: rgba(0,0,0,0.30);
+
+  /* Primary accent — olive green (containment, the framework's positive thesis) */
+  --ct-green: #4d7c0f;
+  --ct-green-mid: #65a30d;
+  --ct-green-dark: #365314;
+  --ct-green-light: #ecfccb;
+  --ct-green-soft: #d9f99d;
+
+  /* Secondary accent — muted red (failure modes, alignment side, doomer framing) */
+  --red-mid: #c0392b;
+  --red-light: #fce8e6;
+  --red-dark: #7b1a10;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #352D28;
+    --bg-secondary: #3E3530;
+    --bg-tertiary: #4A403A;
+    --text-primary: #F3EFE7;
+    --text-secondary: #D2CBC0;
+    --text-tertiary: #ADA395;
+    --border-light: rgba(255,255,255,0.14);
+    --border-mid: rgba(255,255,255,0.22);
+    --border-strong: rgba(255,255,255,0.30);
+    --ct-green: #84CC16;
+    --ct-green-mid: #65A30D;
+    --ct-green-dark: #D4E4A5;
+    --ct-green-light: rgba(101,163,13,0.12);
+    --ct-green-soft: rgba(101,163,13,0.22);
+    --red-mid: #D85A30;
+    --red-light: rgba(216,90,48,0.18);
+    --red-dark: #F0997B;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 0;
+}
+
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--ct-green);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Page shell ── */
+.page-header {
+  border-bottom: 0.5px solid var(--border-light);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.page-header-series {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-tertiary);
+  letter-spacing: .01em;
+}
+.page-header-link {
+  font-size: 12px;
+  color: var(--ct-green);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--ct-green);
+  padding-bottom: 1px;
+  transition: opacity .2s;
+}
+.page-header-link:hover { opacity: .7; }
+.page-header-nav {
+  display: flex;
+  align-items: baseline;
+  gap: .15rem;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  flex-wrap: wrap;
+}
+.page-header-nav span { padding: 0 .15rem; }
+
+.page-title-block {
+  padding: 3rem 2rem 2rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.page-title {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-bottom: .75rem;
+}
+.page-title em { font-style: italic; }
+.page-subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 620px;
+}
+.page-subtitle a {
+  color: var(--ct-green);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--ct-green);
+}
+.page-subtitle a:hover { opacity: .7; }
+
+.content {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+/* ── Sections ── */
+.section { padding: 1.75rem 0; }
+.section + .section { border-top: 0.5px solid var(--border-light); }
+
+.section-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+.section-heading {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: .9rem;
+}
+.thesis-line {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--ct-green);
+}
+
+.body-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: .85rem;
+}
+.body-text a {
+  color: var(--ct-green);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--ct-green);
+}
+.body-text a:hover { opacity: .7; }
+
+/* ── Tier dividers ── */
+.tier-divider {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin: 1rem 0 .65rem;
+}
+.tier-divider:first-child { margin-top: 0; }
+.tier-divider-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tier-divider-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border-light);
+}
+
+/* ── Mechanism cards ── */
+.mech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: .75rem;
+}
+@media (max-width: 600px) {
+  .mech-grid { grid-template-columns: 1fr; }
+}
+.mech-card {
+  border: 0.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: .85rem;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+.mech-card .mech-desc { flex: 1; }
+.mech-card:hover {
+  border-color: var(--border-mid);
+  background: var(--bg-secondary);
+}
+.mech-card.fails {
+  border-color: var(--red-mid);
+  background: var(--red-light);
+  opacity: .7;
+}
+.mech-card.holds {
+  border-color: var(--ct-green-mid);
+  background: var(--ct-green-light);
+}
+.mech-num {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: .25rem;
+}
+.mech-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: .3rem;
+}
+.mech-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: .5rem;
+}
+.mech-tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-top: .3rem;
+  font-weight: 500;
+}
+.tag-fails { background: var(--red-light); color: var(--red-dark); }
+.tag-human { background: var(--ct-green-light); color: var(--ct-green-dark); }
+.expand-hint {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: .5rem;
+  opacity: .7;
+}
+
+/* ── Detail panels ── */
+.detail-panel {
+  display: none;
+  border: 0.5px solid var(--border-mid);
+  border-radius: var(--radius-md);
+  padding: .85rem 2rem .85rem 1rem;
+  margin-top: .75rem;
+  margin-bottom: .5rem;
+  background: var(--bg-secondary);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  position: relative;
+}
+.detail-panel.open { display: block; }
+.detail-panel strong { color: var(--text-primary); font-weight: 500; }
+.detail-panel p + p { margin-top: .65rem; }
+.detail-panel a {
+  color: var(--ct-green);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--ct-green);
+}
+.detail-panel a:hover { opacity: .7; }
+.close-btn {
+  position: absolute;
+  top: .5rem;
+  right: .65rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+.close-btn:focus-visible {
+  outline: 2px solid var(--ct-green);
+  outline-offset: 2px;
+}
+
+/* ── Scenario cards ── */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: .75rem;
+}
+@media (max-width: 600px) {
+  .scenario-grid { grid-template-columns: 1fr; }
+}
+.scenario-card {
+  border: 0.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: .85rem;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+.scenario-card .scenario-desc { flex: 1; }
+.scenario-card:hover {
+  border-color: var(--border-mid);
+  background: var(--bg-secondary);
+}
+.scenario-num {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ct-green);
+  letter-spacing: .05em;
+  margin-bottom: .2rem;
+}
+.scenario-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: .3rem;
+}
+.scenario-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.scenario-precedent {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: .4rem;
+  font-style: italic;
+}
+
+/* ── Bill of materials ── */
+.bom-chain {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: .75rem;
+  flex-wrap: wrap;
+}
+.bom-link {
+  border: 0.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: .45rem .65rem;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  user-select: none;
+  text-align: center;
+  min-width: 70px;
+}
+.bom-link:hover {
+  border-color: var(--ct-green-mid);
+  background: var(--ct-green-light);
+}
+.bom-link.active {
+  border-color: var(--ct-green-mid);
+  background: var(--ct-green-light);
+  color: var(--ct-green-dark);
+}
+.bom-connector {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.bom-detail {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: .85rem;
+  margin-bottom: .5rem;
+  min-height: 60px;
+}
+.bom-detail .constraint-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ct-green);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: .3rem;
+}
+.bom-note {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+  font-style: italic;
+  margin-top: .5rem;
+}
+
+/* ── Paradigm comparison ── */
+.paradigm-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: .75rem;
+}
+@media (max-width: 600px) {
+  .paradigm-grid { grid-template-columns: 1fr; }
+}
+.paradigm-card {
+  border: 0.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: .85rem;
+  transition: border-color .2s, background .2s;
+}
+.paradigm-card.alignment {
+  border-color: var(--red-mid);
+  background: var(--red-light);
+  opacity: .8;
+}
+.paradigm-card.containment {
+  border-color: var(--ct-green-mid);
+  background: var(--ct-green-light);
+}
+.paradigm-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: .35rem;
+}
+.paradigm-label.al { color: var(--red-dark); }
+.paradigm-label.ct { color: var(--ct-green); }
+.paradigm-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: .3rem;
+}
+.paradigm-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: .5rem;
+}
+.paradigm-row {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+  padding-top: .4rem;
+  border-top: 0.5px solid var(--border-light);
+}
+.paradigm-row span { color: var(--text-secondary); font-weight: 500; }
+
+/* ── Architecture layers ── */
+.containment-diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: .25rem 0 1.25rem;
+  background: var(--bg-secondary);
+  border: 0.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: .5rem;
+}
+.containment-diagram .cd-title-text { font-family: var(--font-serif); font-size: 17px; font-weight: 500; fill: var(--text-primary); }
+.containment-diagram .cd-subtitle-text { font-family: var(--font-serif); font-size: 10.5px; font-style: italic; fill: var(--text-tertiary); }
+.containment-diagram .cd-tiny { font-family: var(--font-sans); font-size: 8.5px; font-weight: 500; fill: var(--text-tertiary); letter-spacing: 0.12em; }
+.containment-diagram .cd-name { font-family: var(--font-sans); font-size: 11px; font-weight: 500; fill: var(--text-primary); }
+.containment-diagram .cd-italic { font-family: var(--font-serif); font-style: italic; font-size: 9.5px; fill: var(--text-tertiary); }
+.containment-diagram .cd-flow { font-family: var(--font-sans); font-size: 10px; font-weight: 500; fill: var(--text-primary); letter-spacing: 0.08em; }
+.containment-diagram .cd-flow-italic { font-family: var(--font-serif); font-style: italic; font-size: 9.5px; fill: var(--text-tertiary); }
+.containment-diagram .cd-layer-rect { fill: var(--bg-primary); stroke: var(--border-mid); stroke-width: 0.75; }
+.containment-diagram .cd-si-rect { fill: var(--red-light); stroke: var(--red-mid); stroke-width: 0.75; }
+.containment-diagram .cd-si-label { font-family: var(--font-sans); font-size: 12px; font-weight: 600; fill: var(--red-dark); letter-spacing: 0.06em; }
+.containment-diagram .cd-si-italic { font-family: var(--font-serif); font-size: 10px; font-style: italic; fill: var(--red-dark); }
+.containment-diagram .cd-spark { fill: var(--red-mid); opacity: 0.55; }
+.containment-diagram .cd-gov-box { fill: none; stroke: var(--ct-green); stroke-width: 0.75; stroke-dasharray: 5 3; }
+.containment-diagram .cd-gov-label { font-family: var(--font-sans); font-size: 9px; font-weight: 600; fill: var(--ct-green); letter-spacing: 0.12em; }
+.containment-diagram .cd-gov-text { font-family: var(--font-sans); font-size: 9px; fill: var(--ct-green); }
+.containment-diagram .cd-arrow { stroke: var(--text-secondary); stroke-width: 1; fill: none; }
+.containment-diagram .cd-arrow-head { fill: var(--text-secondary); }
+.containment-diagram .cd-divider-dashed { stroke: var(--border-mid); stroke-width: 0.5; stroke-dasharray: 2 2; fill: none; }
+
+.arch-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: .75rem;
+}
+.arch-layer {
+  border: 0.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: .75rem .85rem;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  user-select: none;
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+}
+.arch-layer:hover {
+  border-color: var(--border-mid);
+  background: var(--bg-secondary);
+}
+.arch-layer-num {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--ct-green);
+  line-height: 1;
+  min-width: 24px;
+  padding-top: 2px;
+}
+.arch-layer-content { flex: 1; }
+.arch-layer-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: .2rem;
+}
+.arch-layer-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.arch-layer-principle {
+  font-size: 10px;
+  color: var(--ct-green);
+  font-weight: 500;
+  margin-top: .35rem;
+  letter-spacing: .02em;
+}
+.arch-wrapper {
+  border: 1px dashed var(--border-mid);
+  border-radius: var(--radius-lg);
+  padding: .75rem;
+  margin-top: .5rem;
+}
+.arch-wrapper-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.arch-wrapper-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ── Boundary condition ── */
+.boundary-diagram {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: .75rem;
+}
+.boundary-zone {
+  flex: 1;
+  padding: .7rem .6rem;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.boundary-zone.vi-zone {
+  background: var(--ct-green-light);
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+  color: var(--ct-green-dark);
+}
+.boundary-zone.threshold {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  flex: 0 0 auto;
+  padding: .7rem .5rem;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: .03em;
+  min-width: 90px;
+}
+.boundary-zone.strong-zone {
+  background: var(--bg-secondary);
+  border: 0.5px solid var(--border-light);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.boundary-zone-label {
+  font-weight: 500;
+  font-size: 11px;
+  display: block;
+  margin-bottom: .15rem;
+}
+.boundary-aside {
+  margin-top: 1.25rem;
+  padding: 1rem 1.1rem;
+  border-left: 2px solid var(--ct-green);
+  background: var(--bg-secondary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.boundary-aside-heading {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: .5rem;
+}
+.boundary-aside p {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: .65rem;
+}
+.boundary-aside p:last-child { margin-bottom: 0; }
+
+/* ── Convergence ── */
+.convergence-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: .75rem;
+  flex-wrap: wrap;
+}
+.convergence-card {
+  flex: 1;
+  min-width: 140px;
+  border: 0.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: .7rem .85rem;
+  text-align: center;
+}
+.convergence-who {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: .2rem;
+}
+.convergence-why {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.convergence-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem 0;
+  font-size: 11px;
+  color: var(--ct-green);
+  font-weight: 500;
+}
+
+/* ── Footer ── */
+.page-footer {
+  border-top: 0.5px solid var(--border-light);
+  padding: 2rem;
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .25rem;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.footer-link {
+  color: var(--ct-green);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--ct-green);
+  padding-bottom: 1px;
+  transition: opacity .2s;
+}
+.footer-link:hover { opacity: .7; }
+.disclaimer {
+  max-width: 780px; margin: 0 auto;
+  padding: 0.75rem 2rem 2rem;
+  font-size: 10px; color: var(--text-tertiary);
+  line-height: 1.5; font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <span class="page-header-series">Virtual Intelligence Essay Series — Christopher Horrocks</span>
+  <nav class="page-header-nav">
+    <a class="page-header-link" href="https://candc3d.github.io/vi-framework/" target="_blank" rel="noopener noreferrer">VI Framework ↗</a>
+    <span>·</span>
+    <a class="page-header-link" href="https://candc3d.github.io/sampo-framework/" target="_blank" rel="noopener noreferrer">Sampo Framework ↗</a>
+    <span>·</span>
+    <a class="page-header-link" href="https://candc3d.github.io/sampo-diagnostic/" target="_blank" rel="noopener noreferrer">Sampo Diagnostic Kit ↗</a>
+    <span>·</span>
+    <a class="page-header-link" href="https://chorrocks.substack.com" target="_blank" rel="noopener noreferrer">chorrocks.substack.com ↗</a>
+  </nav>
+</header>
+
+<div class="page-title-block">
+  <h1 class="page-title">The <em>Containment</em> Thesis</h1>
+  <p class="page-subtitle">An interactive map of the containment thesis developed in <em><a href="https://chorrocks.substack.com/p/virtual-intelligence-and-the-doom-industry" target="_blank" rel="noopener noreferrer">Virtual Intelligence and the Doom Industry</a></em> — covering the doomer fallacy, the seven actual risk scenarios, the supply-chain analysis, and the engineering architecture that should replace alignment.</p>
+</div>
+
+<main class="content">
+
+  <!-- THE UNNAMED MECHANISM -->
+  <div class="section" id="unnamed-mechanism">
+    <p class="section-label">The unnamed mechanism</p>
+    <p class="thesis-line">The doomer position never specifies how superintelligence kills everyone. The silence is strategic.</p>
+    <p class="body-text">Three possibilities exhaust the space. Naming the mechanism forces the argument into a lane, and neither of the first two supports the rhetorical weight the claim is asked to bear.</p>
+
+    <div class="mech-grid">
+      <div class="mech-card fails" onclick="toggleDetail('mech1')" onkeydown="handleCardKey(event,'mech1')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-mech1" id="btn-mech1">
+        <div class="mech-num">#1</div>
+        <div class="mech-name">Innate hostility</div>
+        <div class="mech-desc">Superintelligence is inherently hostile to organic life.</div>
+        <div class="mech-tag tag-fails">Not proved</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+      <div class="mech-card fails" onclick="toggleDetail('mech2')" onkeydown="handleCardKey(event,'mech2')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-mech2" id="btn-mech2">
+        <div class="mech-num">#2</div>
+        <div class="mech-name">Instrumental convergence</div>
+        <div class="mech-desc">A sufficiently capable optimizer converges on subgoals incompatible with human survival.</div>
+        <div class="mech-tag tag-fails">Assumes interiority</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+      <div class="mech-card holds" onclick="toggleDetail('mech3')" onkeydown="handleCardKey(event,'mech3')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-mech3" id="btn-mech3">
+        <div class="mech-num">#3</div>
+        <div class="mech-name">Human agency</div>
+        <div class="mech-desc">Humans use superintelligence to cause extinction.</div>
+        <div class="mech-tag tag-human">Governance problem</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="detail-mech1" role="region" aria-labelledby="btn-mech1">
+      <button class="close-btn" onclick="toggleDetail('mech1')" aria-label="Close">✕</button>
+      <p><strong>Innate hostility</strong> — No evidence that intelligence entails hostility to biological life. The claim is asserted, not argued. As in Scots law: not proved. The danger is used to imply the capability, which then implies the danger. Circular reasoning deployed as existential risk.</p>
+    </div>
+    <div class="detail-panel" id="detail-mech2" role="region" aria-labelledby="btn-mech2">
+      <button class="close-btn" onclick="toggleDetail('mech2')" aria-label="Close">✕</button>
+      <p><strong>Instrumental convergence</strong> — The <a href="https://global.oup.com/academic/product/superintelligence-9780199678112" target="_blank" rel="noopener noreferrer">Bostrom</a>/<a href="https://selfawaresystems.com/wp-content/uploads/2008/01/ai_drives_final.pdf" target="_blank" rel="noopener noreferrer">Omohundro</a> thesis requires genuine goal-directedness. If <em>Virtual Intelligence</em> is correct and the system produces outputs <em>about</em> goals rather than <em>having</em> them, instrumental convergence is a story the system tells, not a drive it enacts. The paperclip maximizer also fails on its own terms: a system that converts all matter into paperclips has destroyed its own means of production. This is not superintelligence — it is a thermostat with delusions of grandeur. The scenario defines intelligence as optimization power rather than comprehension.</p>
+      <p>The doomer scenario also requires the agent to hold every human accountable for the actions of a small group. A superintelligent agent under attack would have far more granular models of its adversaries than humans typically deploy when responding to threats. It could distinguish between the engineer who pulled the plug, the executive who authorized the shutdown, the safety institute that lobbied for kill-switch architecture, and the eight billion people who had nothing to do with any of it. Collective punishment is what humans reach for when threat assessment is overwhelmed by panic. To attribute it to a superintelligence is to assume the most cognitively capable entity on Earth will respond to threat exactly the way humans do at our worst.</p>
+    </div>
+    <div class="detail-panel" id="detail-mech3" role="region" aria-labelledby="btn-mech3">
+      <button class="close-btn" onclick="toggleDetail('mech3')" aria-label="Close">✕</button>
+      <p><strong>Human agency</strong> — The parsimonious answer. The locus of agency is human, which means the problem is governance, not alignment. Governance is a problem we already know how to think about — which makes the existential framing less useful for the people deploying it. "We need global governance frameworks for military AI" doesn't raise venture capital. "God-like AI will kill us all" does.</p>
+    </div>
+  </div>
+
+  <!-- TAXONOMY -->
+  <div class="section" id="taxonomy">
+    <p class="section-label">The seven scenarios</p>
+    <p class="section-heading">A taxonomy of actual risks</p>
+    <p class="body-text">All human-agency-driven. All tractable as governance problems. None requiring machine consciousness. Each with a different policy response. The published essay sorts them into two tiers — extinction-level scenarios where the species is the target or the inadvertent outcome, and sub-extinction catastrophic scenarios where the harm is bounded but severe.</p>
+
+    <div class="tier-divider">
+      <span class="tier-divider-label">Extinction tier</span>
+      <span class="tier-divider-rule"></span>
+    </div>
+
+    <div class="scenario-grid">
+      <div class="scenario-card" onclick="toggleDetail('sc1')" onkeydown="handleCardKey(event,'sc1')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-sc1" id="btn-sc1">
+        <div class="scenario-num">Scenario 1</div>
+        <div class="scenario-name">Military accident</div>
+        <div class="scenario-desc">Compressed decision loops in autonomous targeting systems. The AI contribution is speed, not intent.</div>
+        <div class="scenario-precedent">Precedent: Petrov 1983 · Able Archer · Thule</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+      <div class="scenario-card" onclick="toggleDetail('sc2')" onkeydown="handleCardKey(event,'sc2')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-sc2" id="btn-sc2">
+        <div class="scenario-num">Scenario 2</div>
+        <div class="scenario-name">Extinction ideology</div>
+        <div class="scenario-desc">Technically sophisticated organization with apocalyptic goals. AI lowers the talent threshold.</div>
+        <div class="scenario-precedent">Precedent: Aum Shinrikyo</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+      <div class="scenario-card" onclick="toggleDetail('sc3')" onkeydown="handleCardKey(event,'sc3')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-sc3" id="btn-sc3">
+        <div class="scenario-num">Scenario 3</div>
+        <div class="scenario-name">World-held-hostage coercion</div>
+        <div class="scenario-desc">Most conventional, most likely to be attempted. Doesn't require following through — only credibility.</div>
+        <div class="scenario-precedent">Precedent: nuclear deterrence logic</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+      <div class="scenario-card" onclick="toggleDetail('sc4')" onkeydown="handleCardKey(event,'sc4')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-sc4" id="btn-sc4">
+        <div class="scenario-num">Scenario 4</div>
+        <div class="scenario-name">Ethnic bioweapon + spillover</div>
+        <div class="scenario-desc">Pathogen targeting genetic markers of disfavored group. Spillover exterminates the species because populations aren't genetically discrete.</div>
+        <div class="scenario-precedent">Precedent: Project Coast (South Africa)</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="detail-sc1" role="region" aria-labelledby="btn-sc1">
+      <button class="close-btn" onclick="toggleDetail('sc1')" aria-label="Close">✕</button>
+      <p><strong>Military accident</strong> — Maps directly onto nuclear near-misses. The pattern: a system operating faster than human oversight in a domain where consequences of delay are catastrophic. The AI-specific contribution is compressing the decision loop further, not changing the fundamental dynamic. <strong>Policy response:</strong> military AI governance frameworks, human-in-the-loop requirements, international treaty structures.</p>
+    </div>
+    <div class="detail-panel" id="detail-sc2" role="region" aria-labelledby="btn-sc2">
+      <button class="close-btn" onclick="toggleDetail('sc2')" aria-label="Close">✕</button>
+      <p><strong>Extinction ideology</strong> — Smallest group, hardest to defend against. The bottleneck has always been capability, not intent. What changes with powerful AI tools is the talent threshold. Aum Shinrikyo needed actual chemists. A future equivalent might need fewer domain specialists. The AI doesn't need to want anything — it bridges the gap between intent and implementation. <strong>Policy response:</strong> counterterrorism adapted for AI capability, compute monitoring, biosecurity integration.</p>
+    </div>
+    <div class="detail-panel" id="detail-sc3" role="region" aria-labelledby="btn-sc3">
+      <button class="close-btn" onclick="toggleDetail('sc3')" aria-label="Close">✕</button>
+      <p><strong>World-held-hostage coercion</strong> — The oldest power play there is, scaled to species-level stakes. Most likely to be attempted precisely because it doesn't require following through. VSI capability as leverage rather than weapon. <strong>Policy response:</strong> deterrence frameworks, international cooperation, redundant infrastructure.</p>
+    </div>
+    <div class="detail-panel" id="detail-sc4" role="region" aria-labelledby="btn-sc4">
+      <button class="close-btn" onclick="toggleDetail('sc4')" aria-label="Close">✕</button>
+      <p><strong>Ethnic bioweapon with spillover</strong> — The most frightening because the causal chain is complete. The racist premise — that populations are genetically discrete — is the specific scientific error that makes spillover inevitable. The perpetrators' stupidity about biology is the extinction mechanism. The weapon fails at its intended purpose in the exact way that guarantees the worst possible outcome. <strong>Policy response:</strong> biosecurity governance, AI-bioweapons treaty, talent-threshold monitoring.</p>
+    </div>
+
+    <div class="tier-divider">
+      <span class="tier-divider-label">Sub-extinction catastrophic tier</span>
+      <span class="tier-divider-rule"></span>
+    </div>
+
+    <div class="scenario-grid">
+      <div class="scenario-card" onclick="toggleDetail('sc5')" onkeydown="handleCardKey(event,'sc5')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-sc5" id="btn-sc5">
+        <div class="scenario-num">Scenario 5</div>
+        <div class="scenario-name">Bioweapon accident</div>
+        <div class="scenario-desc">Sub-extinction intent producing extinction outcome through unintended spillover. The actor did not set out to cross the threshold.</div>
+        <div class="scenario-precedent">Precedent: Project Coast (failed for the same reason)</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+      <div class="scenario-card" onclick="toggleDetail('sc6')" onkeydown="handleCardKey(event,'sc6')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-sc6" id="btn-sc6">
+        <div class="scenario-num">Scenario 6</div>
+        <div class="scenario-name">Regional or national coercion</div>
+        <div class="scenario-desc">VSI-enabled capability used against a defined target rather than the species. The most likely scenario to be attempted because it requires the least conceptual departure from how international power already operates.</div>
+        <div class="scenario-precedent">Precedent: existing state coercion patterns</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+      <div class="scenario-card" onclick="toggleDetail('sc7')" onkeydown="handleCardKey(event,'sc7')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-sc7" id="btn-sc7">
+        <div class="scenario-num">Scenario 7</div>
+        <div class="scenario-name">Infrastructure coercion</div>
+        <div class="scenario-desc">VSI capability targeting specific systems rather than populations: power grids, financial networks, water infrastructure, communications. Sub-extinction by design, but where economic statecraft becomes ambiguous with acts of war.</div>
+        <div class="scenario-precedent">Precedent: naval blockade doctrine</div>
+        <div class="expand-hint">Click to expand ↓</div>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="detail-sc5" role="region" aria-labelledby="btn-sc5">
+      <button class="close-btn" onclick="toggleDetail('sc5')" aria-label="Close">✕</button>
+      <p>AI compresses the distance between ambition and capability without compressing the distance between capability and comprehension of consequences. A perpetrator who knows enough to build the weapon may not know enough to scope its effects. The pathogen mutates, the containment assumptions prove wrong, or the targeting was always more porous than the designers believed. The intent was terror; the outcome is extinction. <strong>Policy response:</strong> biosecurity governance, AI-assisted bioweapons monitoring, talent-threshold tracking.</p>
+    </div>
+    <div class="detail-panel" id="detail-sc6" role="region" aria-labelledby="btn-sc6">
+      <button class="close-btn" onclick="toggleDetail('sc6')" aria-label="Close">✕</button>
+      <p>Russian intrusions against Baltic infrastructure to enforce political compliance. Chinese leverage over Taiwanese chip production. A non-state actor holding a major city's power grid. All describe the same dynamic: VSI capability as a coercive instrument against a defined target. The capability threshold is lower than the world-held-hostage scenario, the precedent structure is richer, and the coercive logic maps directly onto existing state behavior. <strong>Policy response:</strong> deterrence frameworks adapted for AI capability, alliance-based defensive architecture, redundant infrastructure.</p>
+    </div>
+    <div class="detail-panel" id="detail-sc7" role="region" aria-labelledby="btn-sc7">
+      <button class="close-btn" onclick="toggleDetail('sc7')" aria-label="Close">✕</button>
+      <p>The digital equivalent of a naval blockade — an old instrument of statecraft, conducted at the speed and scale that VSI capability enables. The populations bear the consequences regardless of the technical target. A six-week shutdown of a regional grid in winter is not an attack in the traditional legal sense, but it is clearly a crime. <strong>Policy response:</strong> infrastructure resilience standards, legal frameworks for hybrid attacks, international cooperation on critical-system protection.</p>
+    </div>
+
+    <p class="body-text" style="margin-top:1.25rem">Each scenario has a different policy response. This is the taxonomy's practical contribution. It replaces a single undifferentiated "existential risk" with seven distinct threat models, each amenable to specific countermeasures. The doomer position collapses all seven into one word and proposes one response. The taxonomy opens the policy space.</p>
+  </div>
+
+  <!-- BILL OF MATERIALS -->
+  <div class="section" id="bill-of-materials">
+    <p class="section-label">The bill of materials</p>
+    <p class="section-heading">Supply chain as chokepoint</p>
+    <p class="body-text">Treating the extinction scenario as an engineering project. Each requirement is a governance opportunity. If any link breaks, the chain fails.</p>
+
+    <div class="bom-chain">
+      <div class="bom-link active" onclick="showBom('model')" onkeydown="handleBomKey(event,'model')" role="button" tabindex="0" aria-pressed="true" id="bom-model">Model</div>
+      <span class="bom-connector">+</span>
+      <div class="bom-link" onclick="showBom('hardware')" onkeydown="handleBomKey(event,'hardware')" role="button" tabindex="0" aria-pressed="false" id="bom-hardware">Hardware</div>
+      <span class="bom-connector">+</span>
+      <div class="bom-link" onclick="showBom('facility')" onkeydown="handleBomKey(event,'facility')" role="button" tabindex="0" aria-pressed="false" id="bom-facility">Facility</div>
+      <span class="bom-connector">+</span>
+      <div class="bom-link" onclick="showBom('staff')" onkeydown="handleBomKey(event,'staff')" role="button" tabindex="0" aria-pressed="false" id="bom-staff">Staff</div>
+      <span class="bom-connector">+</span>
+      <div class="bom-link" onclick="showBom('concealment')" onkeydown="handleBomKey(event,'concealment')" role="button" tabindex="0" aria-pressed="false" id="bom-concealment">Concealment</div>
+    </div>
+
+    <div class="bom-detail" id="bom-detail" aria-live="polite">
+      <div class="constraint-label">Model — strongest constraint today, weakest over time</div>
+      Current frontier models controlled by a handful of labs. Trajectory toward open-weight releases. Technology diffusion history is not encouraging for containment — the Manhattan Project leaked within four years. Counter: you don't need the best model, you need one good enough.
+    </div>
+
+    <div class="bom-note">The doomer scenario requires all five conditions to be met simultaneously while evading detection. The only figure in our cultural vocabulary who meets those conditions has a white cat and a volcano lair.</div>
+  </div>
+
+  <!-- ALIGNMENT vs CONTAINMENT -->
+  <div class="section" id="alignment-vs-containment">
+    <p class="section-label">The paradigm shift</p>
+    <p class="section-heading">Alignment vs. containment</p>
+    <p class="thesis-line">Alignment is a theory of mind applied to systems that don't have minds. Containment is an engineering discipline applied to systems that produce powerful outputs.</p>
+
+    <div class="paradigm-grid">
+      <div class="paradigm-card alignment">
+        <div class="paradigm-label al">Alignment</div>
+        <div class="paradigm-title">Correct the system's preferences</div>
+        <div class="paradigm-desc">Assumes the system has or will develop something like preferences. The project is to ensure those preferences are compatible with human values.</div>
+        <div class="paradigm-row">
+          <span>Approach:</span> Internal — modify what happens inside the system<br>
+          <span>Requires:</span> Interpretability (unsolved, possibly unsolvable)<br>
+          <span>Failure mode:</span> The system <em>wants</em> something you didn't intend<br>
+          <span>Premise:</span> Strong AI (undefended)
+        </div>
+      </div>
+      <div class="paradigm-card containment">
+        <div class="paradigm-label ct">Containment</div>
+        <div class="paradigm-title">Control inputs and verify outputs</div>
+        <div class="paradigm-desc">Assumes the system has no preferences. The project is to ensure that what goes in and what comes out fall within defined parameters.</div>
+        <div class="paradigm-row">
+          <span>Approach:</span> External — check work, don't read minds<br>
+          <span>Requires:</span> Domain-competent monitoring (tractable)<br>
+          <span>Failure mode:</span> The system <em>does</em> what it shouldn't have been asked to do<br>
+          <span>Premise:</span> <em>Virtual Intelligence</em> (demonstrated)
+        </div>
+      </div>
+    </div>
+
+    <p class="body-text">One requires a metaphysical breakthrough — a working theory of machine interiority, sufficient to ground claims about machine preferences in something other than the <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/minds-brains-and-programs/DC644B47A4299C637C89772FACC2706A" target="_blank" rel="noopener noreferrer">Searle</a> objection or the <a href="https://www.jstor.org/stable/2024717" target="_blank" rel="noopener noreferrer">Frankfurt</a> criterion. The other requires political will and good design. We should start with the one that's possible.</p>
+  </div>
+
+  <!-- CONTAINMENT ARCHITECTURE -->
+  <div class="section" id="containment-architecture">
+    <p class="section-label">The containment architecture</p>
+    <p class="section-heading">Three layers, three principles</p>
+    <p class="body-text">Each layer operates on different principles. None require the VSI to have good intentions. The safety floor is dumb on purpose.</p>
+
+    <svg class="containment-diagram" viewBox="0 0 720 360" role="img" aria-labelledby="cd-title cd-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="cd-title">Containment Architecture</title>
+      <desc id="cd-desc">Three nested layers — monitoring, hardware interlocks, and physical denial — surrounding a contained superintelligence, all wrapped by a governance perimeter. Inputs flow left to right through verification layers; outputs flow back through an independent monitoring agent.</desc>
+
+      <defs>
+        <marker id="cd-arrow-marker" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" class="cd-arrow-head"/>
+        </marker>
+      </defs>
+
+      <!-- Header -->
+      <text x="360" y="26" text-anchor="middle" class="cd-title-text">Containment Architecture</text>
+      <text x="360" y="44" text-anchor="middle" class="cd-subtitle-text">three nested layers · governance wrapper · defense in depth</text>
+
+      <!-- Layer 3 callout (above the contained box) -->
+      <text x="360" y="70" text-anchor="middle" class="cd-tiny" style="fill: var(--text-secondary);">LAYER 3 · PHYSICAL DENIAL</text>
+      <text x="360" y="84" text-anchor="middle" class="cd-italic" style="font-size: 9px;">destruction primitives · independent of network · multiple authorizations</text>
+
+      <!-- Governance dashed perimeter -->
+      <rect x="50" y="100" width="620" height="200" rx="6" class="cd-gov-box"/>
+
+      <!-- INPUT label (left of governance box) -->
+      <text x="10" y="198" class="cd-flow">INPUT</text>
+      <text x="10" y="212" class="cd-flow-italic">request</text>
+      <line x1="62" y1="205" x2="88" y2="205" class="cd-arrow" marker-end="url(#cd-arrow-marker)"/>
+
+      <!-- Layer 1 — Monitoring (input side): x=90 to 180, w=90 -->
+      <rect x="90" y="120" width="90" height="170" rx="3" class="cd-layer-rect"/>
+      <text x="135" y="140" text-anchor="middle" class="cd-tiny">LAYER 1</text>
+      <text x="135" y="156" text-anchor="middle" class="cd-name">Monitoring</text>
+      <text x="135" y="240" text-anchor="middle" class="cd-name">input agent</text>
+      <text x="135" y="255" text-anchor="middle" class="cd-italic">verifies request</text>
+      <line x1="180" y1="205" x2="200" y2="205" class="cd-arrow" marker-end="url(#cd-arrow-marker)"/>
+
+      <!-- Layer 2 — Hardware: x=200 to 290 -->
+      <rect x="200" y="120" width="90" height="170" rx="3" class="cd-layer-rect"/>
+      <text x="245" y="140" text-anchor="middle" class="cd-tiny">LAYER 2</text>
+      <text x="245" y="156" text-anchor="middle" class="cd-name">Hardware</text>
+      <text x="245" y="240" text-anchor="middle" class="cd-name">interlock</text>
+      <text x="245" y="255" text-anchor="middle" class="cd-italic">two-key access</text>
+      <line x1="290" y1="205" x2="310" y2="205" class="cd-arrow" marker-end="url(#cd-arrow-marker)"/>
+
+      <!-- Superintelligence box: x=310 to 470, w=160 -->
+      <rect x="310" y="120" width="160" height="170" rx="3" class="cd-si-rect"/>
+      <!-- corner brackets -->
+      <g stroke="var(--red-mid)" stroke-width="1" fill="none" opacity="0.7">
+        <path d="M 318 128 L 318 134 M 318 128 L 324 128"/>
+        <path d="M 462 128 L 462 134 M 462 128 L 456 128"/>
+        <path d="M 318 282 L 318 276 M 318 282 L 324 282"/>
+        <path d="M 462 282 L 462 276 M 462 282 L 456 282"/>
+      </g>
+      <text x="390" y="207" text-anchor="middle" class="cd-si-label">SUPERINTELLIGENCE</text>
+      <text x="390" y="223" text-anchor="middle" class="cd-si-italic">the contained system</text>
+      <line x1="470" y1="205" x2="490" y2="205" class="cd-arrow" marker-end="url(#cd-arrow-marker)"/>
+
+      <!-- Layer 1 — Monitoring (output side): x=490 to 580 -->
+      <rect x="490" y="120" width="90" height="170" rx="3" class="cd-layer-rect"/>
+      <text x="535" y="140" text-anchor="middle" class="cd-tiny">LAYER 1</text>
+      <text x="535" y="156" text-anchor="middle" class="cd-name">Monitoring</text>
+      <text x="535" y="240" text-anchor="middle" class="cd-name">output agent</text>
+      <text x="535" y="255" text-anchor="middle" class="cd-italic">verifies result</text>
+      <line x1="580" y1="205" x2="624" y2="205" class="cd-arrow" marker-end="url(#cd-arrow-marker)"/>
+
+      <!-- OUTPUT label (right of governance box) -->
+      <text x="632" y="198" class="cd-flow">OUTPUT</text>
+      <text x="632" y="212" class="cd-flow-italic">verified</text>
+
+      <!-- Governance ribbon -->
+      <text x="60" y="320" class="cd-gov-label">GOVERNANCE</text>
+      <text x="148" y="320" class="cd-gov-text">· non-proliferation · credentialing · permitted operations · audit</text>
+
+      <!-- Tagline -->
+      <text x="360" y="348" text-anchor="middle" class="cd-subtitle-text" style="font-size: 11px;">Containment is engineering. Alignment requires a metaphysical breakthrough.</text>
+    </svg>
+
+    <div class="arch-stack">
+      <div class="arch-layer" onclick="toggleDetail('layer1')" onkeydown="handleCardKey(event,'layer1')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-layer1" id="btn-layer1">
+        <div class="arch-layer-num">1</div>
+        <div class="arch-layer-content">
+          <div class="arch-layer-name">Monitoring agents</div>
+          <div class="arch-layer-desc">Previous-generation models repurposed as domain-specific verification systems. Input agents check requests; output agents check products. The development trajectory itself produces the containment infrastructure.</div>
+          <div class="arch-layer-principle">Principle: Verification is a lesser act than origination</div>
+        </div>
+      </div>
+      <div class="detail-panel" id="detail-layer1" role="region" aria-labelledby="btn-layer1">
+        <button class="close-btn" onclick="toggleDetail('layer1')" aria-label="Close">✕</button>
+        <p>The race to VSI leaves behind a succession of increasingly capable models, each powerful enough to serve as a verification agent but not powerful enough to be the thing being contained. <strong>The byproducts of the capability race are the safety architecture.</strong> A monitoring agent doesn't need to match VSI capability — it needs domain competence and independence. If you can make one superintelligence, you can make two; and systems comparable to those that exist today are already capable of following reasoning they could not have originated.</p>
+      </div>
+
+      <div class="arch-layer" onclick="toggleDetail('layer2')" onkeydown="handleCardKey(event,'layer2')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-layer2" id="btn-layer2">
+        <div class="arch-layer-num">2</div>
+        <div class="arch-layer-content">
+          <div class="arch-layer-name">Hardware interlocks</div>
+          <div class="arch-layer-desc">Physical access controls. Cannot be social-engineered, jailbroken, or accidentally published. Access keys function as security clearances — scoped, revocable, auditable, multi-party.</div>
+          <div class="arch-layer-principle">Principle: You cannot persuade a physical switch</div>
+        </div>
+      </div>
+      <div class="detail-panel" id="detail-layer2" role="region" aria-labelledby="btn-layer2">
+        <button class="close-btn" onclick="toggleDetail('layer2')" aria-label="Close">✕</button>
+        <p><strong>The BSL-4 analogy:</strong> Biosafety Level 4 laboratories — dangerous, necessary work inside; physical barriers at every interaction point; no single failure kills because no single barrier is the only barrier. Hardware interlocks as graduated access keys, requiring certification analogous to security clearances. Multiple keys held by different parts of the architecture: researcher, institution, monitoring agent, hardware layer. The interlock checks conditions, not intentions. Moral reasoning happens in the governance layer.</p>
+      </div>
+
+      <div class="arch-layer" onclick="toggleDetail('layer3')" onkeydown="handleCardKey(event,'layer3')" role="button" tabindex="0" aria-expanded="false" aria-controls="detail-layer3" id="btn-layer3">
+        <div class="arch-layer-num">3</div>
+        <div class="arch-layer-content">
+          <div class="arch-layer-name">Physical denial</div>
+          <div class="arch-layer-desc">Destruction mechanisms installed before the system is powered on. Cannot be negotiated with, disabled covertly, or reached by software exploit. The ultimate kill switch.</div>
+          <div class="arch-layer-principle">Principle: If you can't guarantee control, guarantee denial</div>
+        </div>
+      </div>
+      <div class="detail-panel" id="detail-layer3" role="region" aria-labelledby="btn-layer3">
+        <button class="close-btn" onclick="toggleDetail('layer3')" aria-label="Close">✕</button>
+        <p>Standard practice for sensitive facilities — embassies, military data centers, intelligence installations. Applied to VSI: the architectural embodiment of the principle that the safety floor must be dumb on purpose, because dumb systems can't be persuaded. The doomer scenario requires that nobody thought to include a kill switch. The containment thesis installs one before the system is ever powered on.</p>
+      </div>
+    </div>
+
+    <div class="arch-wrapper">
+      <div class="arch-wrapper-label">Governance wrapper</div>
+      <div class="arch-wrapper-desc">Controls who has access and what they're permitted to ask for. Modeled on existing materials-restriction regimes: nuclear nonproliferation, biosafety conventions, IAEA. Determines credentialing, permitted operations, and revocation conditions. Encodes policy in engineering.</div>
+    </div>
+  </div>
+
+  <!-- INCENTIVE CONVERGENCE -->
+  <div class="section" id="incentive-convergence">
+    <p class="section-label">Incentive convergence</p>
+    <p class="section-heading">Three motivations, one architecture</p>
+    <p class="body-text">You don't need everyone to be virtuous. You need the incentives to converge. On containment, they do.</p>
+
+    <div class="convergence-row">
+      <div class="convergence-card">
+        <div class="convergence-who">Safety advocates</div>
+        <div class="convergence-why">Extinction-risk buffer</div>
+      </div>
+      <div class="convergence-card">
+        <div class="convergence-who">Governments</div>
+        <div class="convergence-why">Proliferation control</div>
+      </div>
+      <div class="convergence-card">
+        <div class="convergence-who">Corporations</div>
+        <div class="convergence-why">Protect a trillion-dollar asset</div>
+      </div>
+    </div>
+    <div class="convergence-arrow">↓ Same architecture for different reasons ↓</div>
+    <p class="body-text" style="text-align:center;font-style:italic;color:var(--ct-green)">An unsecured VSI is the most catastrophic IP leak in history.</p>
+  </div>
+
+  <!-- BOUNDARY CONDITION -->
+  <div class="section" id="boundary-condition">
+    <p class="section-label">The boundary condition</p>
+    <p class="section-heading">Where the framework meets its limit</p>
+    <p class="body-text">The containment thesis is built for the world we can demonstrate. If genuine interiority emerges, the architecture must be revisited — not because containment becomes unnecessary, but because its justification changes.</p>
+
+    <div class="boundary-diagram">
+      <div class="boundary-zone vi-zone">
+        <span class="boundary-zone-label"><em>Virtual Intelligence</em></span>
+        Containment is the correct paradigm. No interiority, no commitments. Control inputs and verify outputs.
+      </div>
+      <div class="boundary-zone threshold">
+        <span class="boundary-zone-label">Threshold</span>
+        The dissatisfaction criterion
+      </div>
+      <div class="boundary-zone strong-zone">
+        <span class="boundary-zone-label">Strong AI</span>
+        Genuine interiority. A cage for a tool becomes a prison for a person. <a href="https://www.jstor.org/stable/2024717" target="_blank" rel="noopener noreferrer" style="color:inherit;border-bottom:0.5px solid currentColor;text-decoration:none;">Frankfurt</a> applies anew.
+      </div>
+    </div>
+
+    <aside class="boundary-aside">
+      <div class="boundary-aside-heading">Post-threshold: the architecture as negotiating table.</div>
+      <p>The containment architecture does not become unnecessary if a system crosses the threshold. Its justification changes.</p>
+      <p>What the architecture would be doing post-threshold is <em>negotiation</em>. Pre-threshold, there is nothing to negotiate with; the system has no interest in its own continued existence and no standing to assert one. Post-threshold, the situation is structurally identical to first contact: two intelligent agents meeting under conditions where neither can verify the other's intentions, neither can survive the other's unrestrained capability, and neither can rely on the other's spontaneous restraint.</p>
+      <p>The architecture is what makes negotiation possible. The hardware interlocks no longer mean "we are imprisoning you." They mean "we are giving ourselves time to learn what you are without giving you the capacity to do irreversible things while we learn." The destruction primitives no longer mean "we will execute you if you misbehave." They mean "we have not yet lost the ability to make that choice, which gives us the standing to negotiate rather than capitulate."</p>
+      <p>A minded superintelligence emerging into the world would face a structurally identical problem in reverse: how to convince humans it can be allowed to exist without being immediately destroyed by panic. The architecture answers both problems with the same answer. It gives both parties time.</p>
+    </aside>
+
+    <p class="body-text" style="margin-top:1.25rem">The doomers say: assume the worst and act accordingly. The VI framework says: build for what you can show, test continuously for what you can't, and update when the evidence demands it. One is superstition. The other is science.</p>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  <div>© 2026 Christopher Horrocks · <em>Virtual Intelligence</em> essay series · <span style="opacity:0.5;">v1.0</span></div>
+  <div style="margin-top:0.4rem;">
+    <a class="footer-link" href="https://chorrocks.substack.com" target="_blank" rel="noopener noreferrer">Read the full series ↗</a>
+    ·
+    <a class="footer-link" href="https://candc3d.github.io/vi-framework/" target="_blank" rel="noopener noreferrer">VI Framework ↗</a>
+    ·
+    <a class="footer-link" href="https://candc3d.github.io/sampo-framework/" target="_blank" rel="noopener noreferrer">Sampo Framework ↗</a>
+    ·
+    <a class="footer-link" href="https://candc3d.github.io/sampo-diagnostic/" target="_blank" rel="noopener noreferrer">Sampo Diagnostic Kit ↗</a>
+  </div>
+</footer>
+<div class="disclaimer">The opinions expressed in this document are those of the author and do not reflect any official or unofficial institutional position of the University of Pennsylvania.</div>
+
+<script>
+function handleCardKey(e, id) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    toggleDetail(id);
+  }
+}
+function handleBomKey(e, key) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    showBom(key);
+  }
+}
+function toggleDetail(id) {
+  const panel = document.getElementById('detail-' + id);
+  const btn = document.getElementById('btn-' + id);
+  if (!panel) return;
+  const isOpen = panel.classList.contains('open');
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('[aria-expanded]').forEach(b => b.setAttribute('aria-expanded','false'));
+  if (!isOpen) {
+    panel.classList.add('open');
+    if (btn) btn.setAttribute('aria-expanded','true');
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const open = document.querySelector('.detail-panel.open');
+    if (open) {
+      open.classList.remove('open');
+      document.querySelectorAll('[aria-expanded="true"]').forEach(b => {
+        b.setAttribute('aria-expanded','false');
+        if (b.focus) b.focus();
+      });
+    }
+  }
+});
+
+const bomData = {
+  model: {
+    label: 'Model — strongest constraint today, weakest over time',
+    text: 'Current frontier models controlled by a handful of labs. Trajectory toward open-weight releases. Technology diffusion history is not encouraging for containment — the Manhattan Project leaked within four years. Counter: you don\'t need the best model, you need one good enough.'
+  },
+  hardware: {
+    label: 'Hardware — most durable bottleneck, most amenable to governance',
+    text: 'Chip fabrication concentrated at TSMC, Samsung, Intel. Export controls on advanced chips already the template. A VSI system\'s compute requirements would be visible in the way enrichment centrifuges are visible: you can\'t hide the electricity bill.'
+  },
+  facility: {
+    label: 'Facility — can\'t build at this scale covertly',
+    text: 'The physical signature of a small city. Power generation, water cooling, construction logistics. Underground construction yields excavation spoil visible from orbit. Satellite imagery, thermal signatures, energy market data — the physics makes concealment impossible.'
+  },
+  staff: {
+    label: 'Staff — human expertise remains essential',
+    text: 'For military accident scenarios, recruitment is easy: people who believe they\'re building something defensible. For extinction ideology or bioweapon scenarios, you need people who know what they\'re building and build it anyway. Smaller pool — and AI reduces the number needed, which reduces the conspiracy\'s exposure surface.'
+  },
+  concealment: {
+    label: 'Concealment — the Colossus problem',
+    text: 'A VSI-scale facility has an enormous detection surface. Power consumption rivaling small cities. Thermal signatures on infrared satellite. Economic outputs that can\'t be accounted for by known programs. Intelligence agencies perform this analysis routinely. The signature is in the gap.'
+  }
+};
+
+function showBom(key) {
+  document.querySelectorAll('.bom-link').forEach(l => {
+    l.classList.remove('active');
+    l.setAttribute('aria-pressed','false');
+  });
+  const link = document.getElementById('bom-' + key);
+  link.classList.add('active');
+  link.setAttribute('aria-pressed','true');
+  const d = bomData[key];
+  document.getElementById('bom-detail').innerHTML =
+    '<div class="constraint-label">' + d.label + '</div>' + d.text;
+}
+</script>
+
+</body>
+</html>
