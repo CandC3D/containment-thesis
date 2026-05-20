@@ -143,11 +143,26 @@ body {
 }
 
 a:focus-visible,
-[role="button"]:focus-visible {
+[role="button"]:focus-visible,
+:focus-visible {
   outline: 2px solid var(--ct-green);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  z-index: 1000;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 1rem; }
 
 /* ── Page shell ── */
 .page-header {
@@ -799,6 +814,8 @@ a:focus-visible,
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <header class="page-header">
   <span class="page-header-series">Virtual Intelligence Essay Series — Christopher Horrocks</span>
   <nav class="page-header-nav">
@@ -819,7 +836,7 @@ a:focus-visible,
   <p class="page-subtitle">An interactive map of the containment thesis developed in <em><a href="https://chorrocks.substack.com/p/virtual-intelligence-and-the-doom" target="_blank" rel="noopener noreferrer">Virtual Intelligence and the Doom Industry</a></em> — covering the doomer fallacy, the seven actual risk scenarios, the supply-chain analysis, and the engineering architecture that should replace alignment.</p>
 </div>
 
-<main class="content">
+<main class="content" id="main">
 
   <!-- THE UNNAMED MECHANISM -->
   <div class="section" id="unnamed-mechanism">
